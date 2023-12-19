@@ -72,6 +72,7 @@ app.post("/articles", async (req, res) => {
   } catch (e) {
     console.error(e);
     console.log("Catched");
+    console.log(e.message);
     let errorCode = e.message.substring(25, 28);
     console.log("error code " + errorCode);
     let errorMsg = e.message.substring(29);
@@ -83,18 +84,21 @@ app.post("/articles/add", async (req, res) => {
   try {
     response = await pocket.addArticles(req.body);
   } catch (e) {
-    let errorCode = e.message.substring(15, 18);
-    let errorMsg = e.message.substring(19);
+    let errorCode = e.message.substring(25, 28);
+    console.log("error code " + errorCode);
+    let errorMsg = e.message.substring(29);
     return res.status(errorCode).json({ error_message: errorMsg });
   }
+  return res.json(response);
 });
 
 app.post("/articles/archived", async (req, res) => {
   try {
     articles = await pocket.getArticles(req.body);
   } catch (e) {
-    let errorCode = e.message.substring(15, 18);
-    let errorMsg = e.message.substring(19);
+    let errorCode = e.message.substring(25, 28);
+    console.log("error code " + errorCode);
+    let errorMsg = e.message.substring(29);
     return res.status(errorCode).json({ error_message: errorMsg });
   }
   return res.json(articles);
@@ -104,8 +108,9 @@ app.post("/articles/favourites", async (req, res) => {
   try {
     articles = await pocket.getArticles(req.body);
   } catch (e) {
-    let errorCode = e.message.substring(15, 18);
-    let errorMsg = e.message.substring(19);
+    let errorCode = e.message.substring(25, 28);
+    console.log("error code " + errorCode);
+    let errorMsg = e.message.substring(29);
     return res.status(errorCode).json({ error_message: errorMsg });
   }
   return res.json(articles);
@@ -113,10 +118,12 @@ app.post("/articles/favourites", async (req, res) => {
 
 app.post("/articles/action_favourite", async (req, res) => {
   try {
-    response = await pocket.modifyArticles(req.body);
+    console.log(req.body);
+    response = await pocket.modifyArticles(req.body, req.body["access_token"]);
   } catch (e) {
-    let errorCode = e.message.substring(15, 18);
-    let errorMsg = e.message.substring(19);
+    let errorCode = e.message.substring(25, 28);
+    console.log("error code " + errorCode);
+    let errorMsg = e.message.substring(29);
     return res.status(errorCode).json({ error_message: errorMsg });
   }
   return res.json(express.response);
@@ -124,10 +131,11 @@ app.post("/articles/action_favourite", async (req, res) => {
 
 app.post("/articles/action_archive", async (req, res) => {
   try {
-    response = await pocket.modifyArticles(req.body);
+    response = await pocket.modifyArticles(req.body, req.body["access_token"]);
   } catch (e) {
-    let errorCode = e.message.substring(15, 18);
-    let errorMsg = e.message.substring(19);
+    let errorCode = e.message.substring(25, 28);
+    console.log("error code " + errorCode);
+    let errorMsg = e.message.substring(29);
     return res.status(errorCode).json({ error_message: errorMsg });
   }
 
@@ -135,11 +143,13 @@ app.post("/articles/action_archive", async (req, res) => {
 });
 
 app.post("/articles/action_delete", async (req, res) => {
+  console.log(req.body["access_token"]);
   try {
-    response = await pocket.modifyArticles(req.body);
+    response = await pocket.modifyArticles(req.body, req.body["access_token"]);
   } catch (e) {
-    let errorCode = e.message.substring(15, 18);
-    let errorMsg = e.message.substring(19);
+    let errorCode = e.message.substring(25, 28);
+    console.log("error code " + errorCode);
+    let errorMsg = e.message.substring(29);
     return res.status(errorCode).json({ error_message: errorMsg });
   }
 

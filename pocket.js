@@ -147,6 +147,8 @@ const PocketAPI = class {
     };
 
     const values = { ...access, ...params };
+    console.log("add");
+    console.log(values);
 
     const options = this.setOptions(values, this.config.pocketUrl.add);
     try {
@@ -163,14 +165,16 @@ const PocketAPI = class {
     return JSON.parse(response.body);
   }
 
-  async modifyArticles(actions, callback) {
+  async modifyArticles(actions, accessToken, callback) {
+    console.log(accessToken);
     let response;
     const values = {
-      actions: actions,
+      ...actions,
       consumer_key: this.consumer_key,
-      access_token: this.access_token,
+      access_token: this.access_token ? this.access_token : accessToken,
     };
 
+    console.log(values);
     const options = this.setOptions(values, this.config.pocketUrl.modify);
 
     try {
